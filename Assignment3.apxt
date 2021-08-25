@@ -1,0 +1,25 @@
+trigger Assignment3 on account(after insert)
+{
+    Contact con = new Contact();// Account.Only_Default_Contact__c=TRUE
+    con.FirstName='Info'; 
+    con.LastName='Default'; 
+    con.Email='info@websitedomain.tld';
+    List<Contact> cont = new List<Contact>();
+    list<Id> accId = new list<Id>();
+    For(Account acc:trigger.new) {
+        //cont = [SELECT ID FROM Contact where Account.Id =: Acc.Id];
+        //accId.add(acc.id);
+        con.AccountId = acc.Id;
+        
+    }
+    //for(Account acc:trigger.new){
+        //for(Contact c:[SELECT ID from Contact where ID IN : accId]){
+            //if(cont.size()==1) {
+                //acc.Only_Default_Contact__c=TRUE;
+            //}else  {
+                //acc.Only_Default_Contact__c=FALSE;
+            //}
+        //}
+    //}
+    insert con;
+}
