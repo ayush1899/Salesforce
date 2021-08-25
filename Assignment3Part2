@@ -1,0 +1,23 @@
+trigger Assignment3Part2 on Contact (after insert) {
+    List<Id> accIds = new List<Id>();
+    List<Account> acc = new List<Account>();
+    List<Contact> cont = new List<Contact>();
+    for(Contact con : trigger.new) {
+        accIds.add(con.accountId);
+    }
+    for(Contact c:[SELECT Id from Contact where accountId IN : accIds]){
+        cont.add(c);
+    }
+    for(Account a: [SELECT Id from Account where Id IN : accIds]){
+        for(Contact con : trigger.new){
+            if(cont.size()>1) {
+                a.Only_Default_Contact__c = FALSE;
+                acc.add(a);
+            }else {
+                a.Only_Default_Contact__c = TRUE;
+                acc.add(a);
+            }
+        }
+    }
+    update acc;
+}
